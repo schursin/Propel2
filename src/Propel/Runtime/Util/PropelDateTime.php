@@ -81,8 +81,8 @@ class PropelDateTime extends \DateTime
     }
 
     /**
-     * Get the current microtime with milliseconds. Making sure that the decimal point separator is always ".", ignoring
-     * what is set with the current locale. Otherwise self::createHighPrecision would return false.
+     * Get the current microtime with milliseconds. Making sure that the decimal point separator is always "."
+     * and always including the fractional part. Otherwise self::createHighPrecision would return false.
      *
      * @return string
      */

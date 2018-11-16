@@ -727,7 +727,8 @@ class QueryBuilderTest extends BookstoreTestBase
         BookstoreDataPopulator::populate();
 
         $testLabel = RecordLabelQuery::create()
-            ->findOne($this->con);
+            ->limit(2)
+            ->find($this->con);
 
         $testRelease = ReleasePoolQuery::create()
             ->addJoin(ReleasePoolTableMap::COL_RECORD_LABEL_ID, RecordLabelTableMap::COL_ID)
@@ -737,34 +738,12 @@ class QueryBuilderTest extends BookstoreTestBase
 
         $releasePool = ReleasePoolQuery::create()
             ->addJoin(ReleasePoolTableMap::COL_RECORD_LABEL_ID, RecordLabelTableMap::COL_ID)
-            ->add(ReleasePoolTableMap::COL_RECORD_LABEL_ID, $testLabel->getId(), Criteria::EQUAL)
-            ->add(ReleasePoolTableMap::COL_RECORD_LABEL_ABBR, $testLabel->getAbbr(), Criteria::EQUAL)
+            ->add(ReleasePoolTableMap::COL_RECORD_LABEL_ID, $testLabel->toKeyValue('Id', 'Id'), Criteria::IN)
             ->find($this->con);
         $q2 = $this->con->getLastExecutedQuery();
 
-        $this->assertEquals($q2, $q1, 'Generated query handles filterByRefFk() methods correctly for composite fkeys');
+        $this->assertEquals($q2, $q1, 'filterBy{RelationName}() only accepts arguments of type {RelationName} or PropelCollection');
         $this->assertEquals($releasePool, $testRelease);
-    }
-
-    /**
-     * @throws \Propel\Runtime\Exception\PropelException
-     * @expectedException \Propel\Runtime\Exception\PropelException
-     */
-    public function testFilterUsingCollectionByRelationNameCompositePk()
-    {
-        BookstoreDataPopulator::depopulate();
-        BookstoreDataPopulator::populate();
-
-        $testLabel = RecordLabelQuery::create()
-            ->limit(2)
-            ->find($this->con);
-
-        ReleasePoolQuery::create()
-            ->addJoin(ReleasePoolTableMap::COL_RECORD_LABEL_ID, RecordLabelTableMap::COL_ID)
-            ->filterByRecordLabel($testLabel)
-            ->find($this->con);
-
-        $this->fail('Expected PropelException : filterBy{RelationName}() only accepts arguments of type {RelationName}');
     }
 
     public function testFilterByRefFkCompositeKey()
