@@ -3931,7 +3931,7 @@ abstract class ".$this->getUnqualifiedClassName().$parentClass." implements Acti
             if ($rightValueOrColumn instanceof Column) {
                 $localColumns[$rightValueOrColumn->getPosition()] = '$this->' . $clo;
 
-                if ($cptype == "int" || $cptype == "float" || $cptype == "double") {
+                if ($cptype == "integer" || $cptype == "float" || $cptype == "double") {
                     $conditional .= $and . "\$this->". $clo ." != 0";
                 } elseif ($cptype == "string") {
                     $conditional .= $and . "(\$this->" . $clo ." !== \"\" && \$this->".$clo." !== null)";
