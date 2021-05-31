@@ -225,20 +225,22 @@ class CollectionIterator extends \ArrayIterator
     }
 
     /**
+     * @param int $flags
      * @return void
      */
-    public function asort()
+    public function asort($flags = SORT_REGULAR)
     {
-        parent::asort();
+        parent::asort($flags);
         $this->refreshPositions();
     }
 
     /**
+     * @param int $flags
      * @return void
      */
-    public function ksort()
+    public function ksort($flags = SORT_REGULAR)
     {
-        parent::ksort();
+        parent::ksort($flags);
         $this->refreshPositions();
     }
 
